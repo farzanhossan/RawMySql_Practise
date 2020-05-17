@@ -1,23 +1,20 @@
-const Sequelize = require('sequelize')
+const mysql2 =require('mysql');
 
-const sequelize = new Sequelize('test', 'root', '',{
+const db = mysql2.createConnection({
     host: 'localhost',
-    dialect: 'mysql',
-    operationAliases: false,
-    dialectOptions: {
-      dateStrings: true,
-      typeCast: true,
-      timezone: "+06:00",
-    },
-    timezone: "+06:00",
-})
-sequelize
-  .authenticate()
-  .then(() => {
-    console.error('Database Connected');
-  })
-  .catch((err: any) => {
-    console.error('Unable to connect to the database:', err);
-  });
+    user: 'root',
+    password: '',
+    database: 'RawMySql_Practise'
+});
 
-export default sequelize;
+db.connect((error: any)=>{
+    if(error){
+        throw error;
+    }
+    else{
+        console.log("Database Connected");
+        
+    }
+})
+
+export default db;

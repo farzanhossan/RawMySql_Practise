@@ -3,7 +3,6 @@ import { promises, resolve } from 'dns';
 import bodyParser from 'body-parser';
 
 import userRoutes from './routes/user';
-
 import morgan from 'morgan';
 
 class App{
@@ -15,7 +14,6 @@ class App{
         this.app.use(morgan('dev'));
         this.app.use(bodyParser.urlencoded({extended : false}));
         this.app.use(bodyParser.json());
-        this.middleware();
         this.routes();
         this.errorHandeller();
     }
@@ -32,16 +30,11 @@ class App{
         });
         
         this.app.use((error: any, req: any, res: any, next: any) =>{
-            res.status(500).json({
+            res.status(error.stack || 500);
+            res.json({
                 message: error.message
             })
         })
-    }
-    public middleware(): void{
-        this.app.use((req, res, next) =>{
-            console.log('Checking Middleware')
-            next()
-        });
     }
 
     public start(port: any){
